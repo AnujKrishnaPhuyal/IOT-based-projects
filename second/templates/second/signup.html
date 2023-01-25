@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% load static  %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignUP</title>
+    <link rel="stylesheet" href= {% static 'second/css/bootstrap.css' %}>
+    <link rel="stylesheet" href= {% static 'second/css/all.min.css' %}>
+</head>
+<div align=center class='mt-2'>
+    <img src={% static "second/image/signup.png" %} alt="not found">
+</div>
+<body class="bg-secondary " align=center>
+    <div class="container mt-3"  width="600" 
+    height="600" >
+    <form action="" method="POST"  >
+        {% csrf_token %}
+        {% for fm  in form  %}
+        <div class="form-group">
+        {{fm.label_tag}}{{fm}}{{fm.errors |striptags}}
+    </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary mt-2">Register</button>
+    </form>
+    <a href="{% url 'login' %}"><button type="submit" class="btn btn-primary mt-2">Login</button></a>
+
+</div>
+<script src ={% static 'second/js/bootstrap.js' %}></script>
+<script src ={% static 'second/js/jquery.js' %}></script>    
+<script src ={% static 'second/js/all.min.js' %}></script>    
+
+</body>
+</html>

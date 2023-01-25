@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href= {% static 'second/css/bootstrap.css' %}>
+    <link rel="stylesheet" href= {% static 'second/css/all.min.css' %}>
+</head>
+<body id ="body">
+  <button onclick="printPage()">Print data</button>
+  <table class="table" id ="table">
+        <thead class="thead-dark">
+          <tr class="text-white bg-dark">
+            <th scope="col">Time</th>
+            <th scope="col" class="mr-8">Temperature</th>
+            <th scope="col"class="mr-8">Pulse</th>
+            <th scope="col" >oxygen level</th>
+          </tr>
+        </thead>
+        <tbody id ="display">
+        </tbody>
+        </table>
+        <iframe name="print_frame" width="0" height="0" frameborder="0" src="about:blank"></iframe>
+
+        <script src ={% static 'second/js/bootstrap.js' %}></script>
+        <script src ={% static 'second/js/jquery.js' %}></script>    
+        <script src ={% static 'second/js/all.min.js' %}></script> 
+        <script>
+          $(document).ready(function(){
+              setInterval(function(){
+                $.ajax({
+                  type:'GET',
+                  url: "{% url 'disp_data' %}",
+                  success: function(response){
+                  console.log(response);
+                  $("#display").empty();
+                 //var key =response.users.length-1;
+                 // for( var key in response.users )
+                 for(var key = response.users.length - 1; key >= response.users.length-50; key--)
+                  {
+                   
+                    var temp =" <tr><th scope='row'>"+new Date(response.users[key].timee)+"</th>"  +"<th scope='row'>"+ response.users[key].temp+"</th>"
+                      +"<th scope='row' >"+ response.users[key].pul+"</th>"
+                      +"<th scope='row'>"+ response.users[key].oxy+"</th></tr>";
+                   // console.log(response.users[key].timee);
+                    $("#display").append(temp);
+                  }
+                      
+                    
+           },
+           error: function(response){
+            console.log("error")
+        }
+    
+        
+      });
+    },2000);
+  
+  });
+  
+</script >
+
+<script type="text/javascript">
+  function printPage(){
+   var body = document.getElementById('body').innerHTML;
+   // var table = document.getElementById('table').innerHTML;
+   // document.getElementById('body').innerHTML=table;
+    window.print();
+   // document.getElementById('body').innerHTML=body;
+
+
+  }
+ 
+
+</script>
+  
+ </body>
+</html>

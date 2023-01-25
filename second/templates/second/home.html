@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+{% load static  %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Monitoring System</title>
+    <link rel="stylesheet" href= {% static 'second/css/bootstrap.css' %}>
+    <link rel="stylesheet" href= {% static 'second/css/all.min.css' %}>
+    {% comment %} <style>
+        html {
+         font-family: Arial;
+         display: inline-block;
+         margin: 0px auto;
+         text-align: center;
+        }
+        h2 { font-size: 3.0rem; }
+        p { font-size: 3.0rem; }
+        .units { font-size: 1.2rem; }
+        .dht-labels{
+          font-size: 1.5rem;
+          vertical-align:middle;
+          padding-bottom: 15px;
+          padding-up: 15px;
+        }
+      </style> {% endcomment %}
+</head>
+  <div>
+  <h1 class= " bg-light text-dark">Realtime Health Monitoring</h1>
+  <h3 class= "mt-3 text-info " id="time"></h3>
+  <div class="mt-4 row">
+    
+    <div class="col-sm text-dark">
+      <h3 class=" text-secondary">Temperature</h3>
+        <img src={% static "second/image/temperature.jpg" %} alt="not found" width="400" 
+        height="400"><br>
+        <h4 class="text-dark" id="temperature"></h4>
+       </div>
+     
+    <div class="col-sm">
+      <h3 class="text-secondary">Pulse</h3>
+        <img src={% static "second/image/heart.jpg" %} alt="not found" width="400" 
+        height="390" ><br>
+        <h4 class="text-dark" id="pulse"></h4>
+   
+    </div>
+    
+    <div class="col-sm">
+      <h3 class="text-secondary">Oxygen Level</h3>
+      <img src={% static "second/image/oxy.jpg" %} alt="not found"width="400" 
+      height="380" ><br>
+      <h4 class="text-dark" id="oxygen"></h4>
+      {% comment %} <span id="oxygen" class="text-dark"></span> {% endcomment %}
+  </div>
+</div>
+<div>
+<a href="{% url 'table' %}" >
+  <input type="button" value="View Patient History" class="mt-5 btn btn-primary " />
+</a></div>
+</div>
+   
+    <script src ={% static 'second/js/bootstrap.js' %}></script>
+    <script src ={% static 'second/js/jquery.js' %}></script>    
+    <script src ={% static 'second/js/all.min.js' %}></script>    
+
+    <script>
+        $(document).ready(function(){
+            setInterval(function(){
+              $.ajax({
+                type:'GET',
+                url: "{% url 'disp_data' %}",
+                success: function(response){
+                    console.log(response)
+                    var i= response.users.length-1;
+                   console.log(response.users[i].timee)
+                   var temperature=response.users[i].temp;
+                   var pulse=response.users[i].pul;
+                   var oxygen=response.users[i].oxy;
+                   var time= (new Date(response.users[i].timee));
+                   $("#temperature").empty();
+                   $("#pulse").empty();
+                   $("#oxygen").empty();
+                   $("#time").empty();
+                   document.getElementById("temperature").innerHTML =temperature+"°C";
+                   document.getElementById("pulse").innerHTML =pulse+" "+"Bpm";
+                   document.getElementById("oxygen").innerHTML =oxygen+"%";
+                   document.getElementById("time").innerHTML =time;
+                   
+         },
+         error: function(response){
+          console.log("error")
+      }
+  
+      
+    });
+  },1000);
+
+});
+
+
+
+    </script>
+</body>
+</html>

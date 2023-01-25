@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/gauge-chart@latest/dist/bundle.js"></script> 
+
+</head>
+<body>
+    <div id="gaugeArea"></div>
+<script>
+    let element = document.querySelector('#gaugeArea')
+ 
+// Properties of the gauge
+let gaugeOptions = {
+  hasNeedle: true,
+  needleColor: 'gray',
+  needleUpdateSpeed: 1000,
+  arcColors: ['rgb(44, 151, 222)', 'lightgray'],
+  arcDelimiters: [30],
+  rangeLabel: ['0', '100'],
+  centralLabel: '50',
+}
+ 
+// Drawing and updating the chart
+GaugeChart.gaugeChart(element, 300, gaugeOptions).updateNeedle(50)
+</script>
+</body>
+
+</html>

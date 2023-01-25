@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PATIENTS DATA</title>
+    <link rel="stylesheet" href= {% static 'second/css/bootstrap.css' %}>
+</head>
+<body>
+<h1 align=center>REALTIME HEALTH Monitoring </h1>
+ <h1 id="first"></h1>
+<h1 id="second"></h1>
+<h1 id="third"></h1> 
+<div id="gaugeArea"></div>
+
+
+    <table class="table">
+        {% comment %} {% if st %} {% endcomment %}
+        <thead class="thead-dark">
+          <tr class="text-white bg-dark">
+            <th scope="col">Time</th>
+            <th scope="col">Temperature</th>
+            <th scope="col"class="text-center">Pulse</th>
+            <th scope="col" class="text-center">oxygen level</th>
+          </tr>
+        </thead>
+        <tbody id ="display">
+        
+          {% comment %} <tr>
+           {% for stu in st reversed %}
+            <th scope="row" >{{stu.timee}} </th>
+            <th scope="row" class="bg-white">{{  stu.temp  }}°C  </th>
+            <th scope="row" class="text-center","text-white bg-success">{{stu.pul}} Bpm</th>
+        <th scope="row" class="text-center">{{stu.oxy}}%</th>
+          </tr> {% endcomment %}
+          {% comment %} {% endfor %} {% endcomment %} 
+          {% comment %} {% else %} {% endcomment %}
+          {% comment %} {% endif %} {% endcomment %}
+          <tr>
+             <th scope="row" > </th>
+             <th scope="row" class="bg-white" id="temperature"> oc</th>
+             <th scope="row" class="text-center","text-white bg-success", id="pulse"> Bpm</th>
+         <th scope="row" class="text-center">%</th>
+           </tr>
+        </tbody>
+    </table>
+<script src ={% static 'second/js/bootstrap.js' %}></script>
+<script src ={% static 'second/js/jquery.js' %}></script>
+{% comment %} <script
+  src="https://code.jquery.com/jquery-3.6.0.js"
+  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+  crossorigin="anonymous"></script> {% endcomment %}
+ <script>
+  console.log("hello")
+$(document).ready(function(){
+  setInterval(function(){
+    $.ajax({
+      type:'GET',
+      url: "{% url 'disp_data' %}",
+      success: function(response){
+          console.log(response)
+          var i= response.users.length-1;
+         console.log(response.users[i].timee)
+         var temperature=response.users[i].temp;
+         var pulse=response.users[i].pul;
+         var oxygen=response.users[i].oxy;
+         $("#first").append(temperature);
+         document.getElementById("first").innerHTML =temperature;
+         document.getElementById("second").innerHTML =pulse;
+         document.getElementById("third").innerHTML =oxygen;
+        /* $("#display").append(temp);
+         var temp ="<tr><th scope='row'>"+ new Date(response.users[i].timee)+"</th>"
+         +"<th scope='row'>"+ response.users[i].temp+"</th>"
+         +"<th scope='row'>"+ response.users[i].pul+"</th>"
+         +"<th scope='row'>"+ response.users[i].oxy+"</th></tr>";
+
+         $("#display").append(temp);*/
+
+           
+
+         },
+         error: function(response){
+          console.log("error")
+        }
+    });
+  },1000);
+
+});
+
+ 
+
+ 
+</script>
+  {% comment %} </script>
+   function autoRefresh() {
+        window.location = window.location.href;
+    }
+    setInterval('autoRefresh()', 90000);
+    location.reload(); 
+</script>    {% endcomment %}
+
+
+<script src="https://unpkg.com/gauge-chart@latest/dist/bundle.js"></script> 
+
+
+</body>
+</html>
